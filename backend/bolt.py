@@ -439,7 +439,7 @@ def ideyo(body, say, logger):
     logger.info(target_name)
     todos = local_session.query(ToDo).filter_by(name=target_name).first() 
     logger.info(todos.name)
-    say(todos)
+    say(todos.name)
 
 
 @bolt_app.error

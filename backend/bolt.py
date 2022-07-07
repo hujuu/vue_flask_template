@@ -443,7 +443,7 @@ def ideyo(body, say, logger):
     say(todos.content)
 
 
-@app.command("/ideyolist")
+@bolt_app.command("/ideyolist")
 def ideyo_list(ack, say, command):
     local_session = SESSION()
     ideyo_custom = local_session.query(ToDo).all()

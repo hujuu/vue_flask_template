@@ -433,11 +433,11 @@ def hello(body, say, logger):
     
 
 @bolt_app.message("ideyo")
-    def ideyo(body, say, logger):
-        logger.info(body)
-        logger.inf(body['event']['text'])
-        todos = ToDo.query.filter_by(name=body['event']['text']).all()
-        say(todos)
+def ideyo(body, say, logger):
+    logger.info(body)
+    logger.inf(body['event']['text'])
+    todos = ToDo.query.filter_by(name=body['event']['text']).all()
+    say(todos)
 
 
 @bolt_app.error

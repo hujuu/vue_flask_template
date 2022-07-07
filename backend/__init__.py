@@ -7,7 +7,9 @@ from .config import Config
 from .models import db, init_db, User
 import os
 
-app = Flask(__name__, static_folder=os.environ["STATIC_FOLDER_PATH"], template_folder=os.environ["TEMPLATE_FOLDER_PATH"])
+app = Flask(__name__,
+            static_folder=os.environ["STATIC_FOLDER_PATH"],
+            template_folder=os.environ["TEMPLATE_FOLDER_PATH"])
 jwt = JWTManager(app)
 CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'

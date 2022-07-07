@@ -42,33 +42,7 @@ def fire_and_forget(f): #https://rinoguchi.net/2020/11/python-asyncio.html
     def wrapped(*args, **kwargs):
         return get_or_create_eventloop().run_in_executor(None, f, *args, *kwargs)
     return wrapped
-
-#すべての公開チャンネルにjoinする
-@fire_and_forget
-def channels_join(client):
-    is_repeat = True
-    cursor = None
-    channel_list = []
-    while is_repeat:
-        clist = get_channels(client,cursor)
-        channel_list.extend(clist['channels'])
-        if len(clist.get('response_metadata').get('next_cursor'))>0:
-            cursor = clist.get('response_metadata').get('next_cursor')
-            time.sleep(10) #rate limit 対策
-        else:
-            is_repeat = False
-
-    for channel in channel_list:
-        print(channel)
-        try:
-            res_join = client.conversations_join(
-                channel = channel['id']
-            )
-            logger.info('res_join')
-            logger.info(res_join)
-            time.sleep(1.2) #rate limit 対策
-        except SlackApiError as e:
-            print("Error conversations_join: {}".format(e))
+    
 
 def get_channels(client,next_cursor):
     try:
@@ -266,8 +240,6 @@ def success(args:SuccessArgs) -> BoltResponse:
 
         local_session.commit()
         local_session.close()
-
-        channels_join(client)
 
         return BoltResponse(
             status=200,

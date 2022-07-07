@@ -435,9 +435,10 @@ def hello(body, say, logger):
 @bolt_app.message("ideyo")
 def ideyo(body, say, logger):
     logger.info(body)
-    logger.info(body['event']['text'].split()[1])
-    todos = ToDo.query.filter_by(name=body['event']['text'].split()[1]).first().name
-    logger.info(todos)
+    target_name = body['event']['text'].split()[1]
+    logger.info(target_name)
+    todos = ToDo.query.filter_by(name=target_name).first()
+    logger.info(todos.name)
     say(todos)
 
 

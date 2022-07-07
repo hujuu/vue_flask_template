@@ -450,7 +450,7 @@ def ideyo_list(ack, say, command):
     ack()
     list_out = []
     for ideyos in ideyo_custom:
-        list_out.append(f"{ideyos.title} {ideyos.body}")
+        list_out.append(f"{ideyos.name} {ideyos.content}")
     
     list_text = '\n'.join(list_out)
     say(list_text)

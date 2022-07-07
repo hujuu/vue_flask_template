@@ -28,7 +28,7 @@ from dateutil.relativedelta import relativedelta
 import calendar
 from pytz import timezone
 
-def get_or_create_eventloop():#https://techoverflow.net/2020/10/01/how-to-fix-python-asyncio-runtimeerror-there-is-no-current-event-loop-in-thread/
+def get_or_create_eventloop():
     try:
         return asyncio.get_event_loop()
     except RuntimeError as ex:
@@ -437,7 +437,7 @@ def ideyo(body, say, logger):
     logger.info(body)
     target_name = body['event']['text'].split()[1]
     logger.info(target_name)
-    todos = ToDo.query.filter_by(name=target_name).first()
+    todos = local_session.query(ToDo).filter_by(name=target_name).first() 
     logger.info(todos.name)
     say(todos)
 

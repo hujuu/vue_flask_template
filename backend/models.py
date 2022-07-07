@@ -37,6 +37,7 @@ class User(UserMixin, db.Model):
 class ToDo(db.Model):
     id = db.Column(db.Integer, primary_key=True) # primary keys are required by SQLAlchemy
     name = db.Column(db.String(1000))
+    content = db.Column(db.String(1000))
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
 
 

@@ -443,6 +443,19 @@ def ideyo(body, say, logger):
     say(todos.content)
 
 
+@app.command("/ideyolist")
+def ideyo_list(ack, say, command):
+    local_session = SESSION()
+    ideyo_custom = local_session.query(ToDo).all()
+    ack()
+    list_out = []
+    for ideyos in ideyo_custom:
+        list_out.append(f"{ideyos.title} {ideyos.body}")
+    
+    list_text = '\n'.join(list_out)
+    say(list_text)
+
+
 @bolt_app.error
 def handle_errors(error):
     if isinstance(error, BoltUnhandledRequestError):

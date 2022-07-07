@@ -437,6 +437,7 @@ def ideyo(body, say, logger):
     logger.info(body)
     target_name = body['event']['text'].split()[1]
     logger.info(target_name)
+    local_session = SESSION()
     todos = local_session.query(ToDo).filter_by(name=target_name).first() 
     logger.info(todos.name)
     say(todos.name)

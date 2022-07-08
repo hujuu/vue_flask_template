@@ -421,6 +421,7 @@ def app_home_opened(client, event, body, logger, view):
         }
     )
 
+
 @bolt_app.message("Hello")
 def hello(body, say, logger):
     logger.info(body)
@@ -458,6 +459,69 @@ def idelete(ack, say, command):
     local_session.commit()
     ack()
     say(f"いでりーと {command['text']}")
+
+
+@bolt_app.command("/ideyoadd")
+def open_modal(ack, body, client):
+    ack()
+    client.views_open(
+        trigger_id=body["trigger_id"],
+        view={
+            "callback_id": "view_1",
+            "title": {
+                "type": "plain_text",
+                "text": "追加画面"
+            },
+            "submit": {
+                "type": "plain_text",
+                "text": "Submit"
+            },
+            "blocks": [
+                {
+                    "type": "input",
+                    "block_id": "input_key_word",
+                    "element": {
+                        "type": "plain_text_input",
+                        "action_id": "sl_input",
+                        "placeholder": {
+                            "type": "plain_text",
+                            "text": "呼び出したい言葉を指定してね"
+                        }
+                    },
+                    "label": {
+                        "type": "plain_text",
+                        "text": "呼び出しコマンド"
+                    },
+                    "hint": {
+                        "type": "plain_text",
+                        "text": "思い出しやすいのにしてね"
+                    }
+                },
+                {
+                    "type": "input",
+                    "block_id": "input_body",
+                    "element": {
+                        "type": "plain_text_input",
+                        "action_id": "ml_input",
+                        "multiline": True,
+                        "placeholder": {
+                            "type": "plain_text",
+                            "text": "なんでもいいよ"
+                        }
+                    },
+                    "label": {
+                        "type": "plain_text",
+                        "text": "呼び出す内容"
+                    },
+                    "hint": {
+                        "type": "plain_text",
+                        "text": "よしなに"
+                    }
+                }
+            ],
+            "type": "modal"
+        }
+    )
 
 
 @bolt_app.error

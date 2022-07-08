@@ -54,6 +54,7 @@ def get_channels(client,next_cursor):
         print("Error fetching conversations_list: {}".format(e))
     return channel_list
 
+
 def get_users(client,next_cursor):
     try:
         limit = 500
@@ -438,6 +439,15 @@ def ideyo(body, say, logger):
     todos = local_session.query(ToDo).filter_by(name=target_name).first() 
     logger.info(todos.name)
     say(todos.content)
+
+
+@app.command("/ideyo")
+def repeat_text(ack, say, command):
+    local_session = SESSION()
+    ideyo_custom = local_session.query(ToDo).filter_by(name=f"{command['text']}").first()
+    ack()
+    say(f"いでよ {command['text']}")
+    say(ideyo_custom.content)
 
 
 @bolt_app.command("/ideyolist")

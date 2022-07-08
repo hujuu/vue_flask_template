@@ -36,12 +36,6 @@ def get_or_create_eventloop():
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
             return asyncio.get_event_loop()
-
-def fire_and_forget(f): #https://rinoguchi.net/2020/11/python-asyncio.html
-    """対象関数を非同期で投げっぱなしにするためのデコレータ"""
-    def wrapped(*args, **kwargs):
-        return get_or_create_eventloop().run_in_executor(None, f, *args, *kwargs)
-    return wrapped
     
 
 def get_channels(client,next_cursor):
@@ -454,6 +448,16 @@ def ideyo_list(ack, say, command):
     
     list_text = '\n'.join(list_out)
     say(list_text)
+
+
+@bolt_app.command("/idelete")
+def idelete(ack, say, command):
+    target_name = body['event']['text'].split()[1]
+    local_session = SESSION()
+    ideyo_custom = local_session.query(ToDo).filter_by(name=target_name).delete()
+    local_session.commit()
+    ack()
+    say(f"いでりーと {command['text']}")
 
 
 @bolt_app.error

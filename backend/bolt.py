@@ -525,7 +525,7 @@ def open_modal(ack, body, client):
     )
 
 
-@app.view("view_1")
+@bolt_app.view("view_1")
 def handle_submission(ack, body, client, view):
     # Assume there's an input block with `block_c` as the block_id and `dreamy_input`
     ideyo_word = view["state"]["values"]["input_key_word"]["sl_input"]
@@ -540,7 +540,6 @@ def handle_submission(ack, body, client, view):
     # Acknowledge the view_submission event and close the modal
     ack()
     # Do whatever you want with the input data - here we're saving it to a DB
-    # then sending the user a verification of their submission
     msg = "ありがとうございます"
     try:
         local_session = SESSION()

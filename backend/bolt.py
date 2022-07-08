@@ -241,6 +241,7 @@ def success(args:SuccessArgs) -> BoltResponse:
             body=text_installed
         )
 
+
 def failure(args:FailureArgs) -> BoltResponse:
     print('failure ■□■□■□■□■□■□■□■□■□■□■□')
     assert args.request is not None
@@ -522,6 +523,40 @@ def open_modal(ack, body, client):
             "type": "modal"
         }
     )
+
+
+@app.view("view_1")
+def handle_submission(ack, body, client, view):
+    # Assume there's an input block with `block_c` as the block_id and `dreamy_input`
+    ideyo_word = view["state"]["values"]["input_key_word"]["sl_input"]
+    ideyo_body = view["state"]["values"]["input_body"]["ml_input"]
+    user = body["user"]["id"]
+    errors = {}
+    # if ideyo_body["value"] is not None and len(ideyo_body["value"]) <= 5:
+    #     errors["input_body"] = f"The value must be longer than 5 characters. {ideyo_word['value']}"
+    # if len(errors) > 0:
+    #     ack(response_action="errors", errors=errors)
+    #     return
+    # Acknowledge the view_submission event and close the modal
+    ack()
+    # Do whatever you want with the input data - here we're saving it to a DB
+    # then sending the user a verification of their submission
+    msg = "ありがとうございます"
+    try:
+        local_session = SESSION()
+        new_phrase = ToDo(
+            name=ideyo_word["value"],
+            content=ideyo_body["value"],
+            user_id=1
+        )
+        local_session.add(new_phrase)
+        local_session.commit()
+        msg = f"{ideyo_word['value']} という新しい呪文の登録に成功した"
+    except Exception as e:
+        # Handle error
+        msg = f"There was an error with your submission {str(e)}"
+    finally:
+        client.chat_postMessage(channel=user, text=msg)
 
 
 @bolt_app.error

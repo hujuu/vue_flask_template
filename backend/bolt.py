@@ -38,7 +38,7 @@ def get_or_create_eventloop():
             return asyncio.get_event_loop()
     
 
-def get_channels(client,next_cursor):
+def get_channels(client, next_cursor):
     try:
         limit = 700
         if next_cursor is not None:
@@ -441,7 +441,7 @@ def ideyo(body, say, logger):
     say(todos.content)
 
 
-@app.command("/ideyo")
+@bolt_app.command("/ideyo")
 def repeat_text(ack, say, command):
     local_session = SESSION()
     ideyo_custom = local_session.query(ToDo).filter_by(name=f"{command['text']}").first()
@@ -562,7 +562,6 @@ def handle_submission(ack, body, client, view):
         local_session.commit()
         msg = f"{ideyo_word['value']} という新しい呪文の登録に成功した"
     except Exception as e:
-        # Handle error
         msg = f"There was an error with your submission {str(e)}"
     finally:
         client.chat_postMessage(channel=user, text=msg)

@@ -71,6 +71,7 @@ def get_users(client,next_cursor):
 
     return cuser_list
 
+
 def success(args:SuccessArgs) -> BoltResponse:
     assert args.request is not None
     """#使いそうな変数は以下の通り
@@ -452,9 +453,8 @@ def ideyo_list(ack, say, command):
 
 @bolt_app.command("/idelete")
 def idelete(ack, say, command):
-    target_name = body['event']['text'].split()[1]
     local_session = SESSION()
-    ideyo_custom = local_session.query(ToDo).filter_by(name=target_name).delete()
+    ideyo_custom = local_session.query(ToDo).filter_by(name=f"{command['text']}").delete()
     local_session.commit()
     ack()
     say(f"いでりーと {command['text']}")

@@ -12,6 +12,7 @@ from flask_cors import CORS, cross_origin
 
 auth = Blueprint('auth', __name__)
 
+
 @auth.route("/auth/login", methods=["POST"])
 def login():
     email = request.json.get("username", None)

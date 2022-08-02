@@ -1,3 +1,4 @@
+import os
 from flask import Blueprint, request
 from sqlalchemy.sql.elements import Null
 from .models import User, InstalledWorkSpace, SlackBots, SlackInstallations, ToDo
@@ -27,6 +28,10 @@ from dateutil.tz import gettz
 from dateutil.relativedelta import relativedelta
 import calendar
 from pytz import timezone
+
+import logging
+logging.basicConfig(level=logging.DEBUG)
+
 
 def get_or_create_eventloop():
     try:
@@ -252,10 +257,6 @@ def failure(args:FailureArgs) -> BoltResponse:
         body="Slackへのインストールが失敗しました。こちらのウィンドウを閉じてもう一度やり直して下さい。\nInstallation to Slack has failed. Please close this window and try again."
     )
 
-import os
-
-import logging
-logging.basicConfig(level=logging.DEBUG)
 
 from slack_bolt.adapter.flask import SlackRequestHandler
 
